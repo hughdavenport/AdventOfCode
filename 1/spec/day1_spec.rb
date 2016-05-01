@@ -1,4 +1,5 @@
-require_relative '../1/app/day1.rb'
+require_relative '../day1.rb'
+
 RSpec.describe 'Day 1' do
   context 'Examples' do
     {

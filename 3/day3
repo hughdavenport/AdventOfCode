@@ -1,0 +1,7 @@
+#!/bin/env ruby
+
+require_relative 'deliveries'
+puts ARGV
+input = File.read(ARGV[0])
+
+puts Deliveries.new(input).call
