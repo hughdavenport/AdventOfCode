@@ -1,0 +1,14 @@
+#!/bin/env ruby
+
+require_relative 'nice_string'
+
+input = File.read(ARGV[0])
+
+count = 0
+total = 0
+input.each_line do |line|
+  total += 1
+  count += 1 if NiceString.new(line.chomp).call
+end
+
+puts "Result: #{count} of #{total}"
