@@ -1,0 +1,5 @@
+#!/bin/env ruby
+
+require_relative 'day1.rb'
+
+puts Day1.new(File.read(ARGV[0])).call
