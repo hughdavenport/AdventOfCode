@@ -1,0 +1,15 @@
+#!/bin/env ruby
+
+require_relative 'line_parser'
+require_relative 'wrapping_paper'
+
+puts ARGV
+parser = LineParser.new(File.open(ARGV[0]))
+total = 0
+
+parser.each do |length, width, height|
+  total += WrappingPaper.new(length, width, height).call
+  puts total
+end
+
+puts total
