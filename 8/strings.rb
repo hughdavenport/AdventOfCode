@@ -19,9 +19,27 @@ class StringCounter
 
       if character == "\""
         @state = :outside_string
+      elsif character == "\\"
+        @state = :inside_string_escape_sequence
       else
         @represented_string_characters_count += 1
       end
+    elsif @state == :inside_string_escape_sequence
+      @raw_code_characters_count += 1
+
+      if character == "\"" || character == "\\"
+        @state = :inside_string
+        @represented_string_characters_count += 1
+      elsif character == "x"
+        @state = :inside_string_hex_escape_sequence_1
+      end
+    elsif @state == :inside_string_hex_escape_sequence_1
+      @raw_code_characters_count += 1
+      @state = :inside_string_hex_escape_sequence_2
+    elsif @state == :inside_string_hex_escape_sequence_2
+      @raw_code_characters_count += 1
+      @represented_string_characters_count += 1
+      @state = :inside_string
     end
   end
 end
