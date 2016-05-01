@@ -1,0 +1,9 @@
+#!/bin/env ruby
+
+require_relative 'mine'
+
+input = File.read(ARGV[0])
+
+result = Mine.new(input).call
+
+puts "Result: #{result}"
