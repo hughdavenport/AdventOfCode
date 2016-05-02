@@ -1,17 +1,22 @@
 #!/bin/env ruby
 
 require_relative 'light_grid'
+require_relative 'brightness_grid'
 require_relative 'parser'
 
 input = File.read(ARGV[0])
 light_grid = LightGrid.new
+brightness_grid = BrightnessGrid.new
 
 input.each_line do |line|
-  command = Parser.new(line).call
-  command.each do |key, points|
-    light_grid.method(key).call(*points)
-  end
+  method_name, points = Parser.new(line).call
+  light_grid.method(method_name).call(*points)
+  brightness_grid.method(method_name).call(*points)
   print '.'
 end
+printf("\n")
 
-puts "grid has #{light_grid.on} lights on"
+
+puts "On/off grid has #{light_grid.total_turned_on} lights on"
+
+puts "Brightness grid has #{brightness_grid.total_brightness} total brightness"
