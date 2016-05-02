@@ -1,0 +1,17 @@
+#!/bin/env ruby
+
+require_relative 'light_grid'
+require_relative 'parser'
+
+input = File.read(ARGV[0])
+light_grid = LightGrid.new
+
+input.each_line do |line|
+  command = Parser.new(line).call
+  command.each do |key, points|
+    light_grid.method(key).call(*points)
+  end
+  print '.'
+end
+
+puts "grid has #{light_grid.on} lights on"
