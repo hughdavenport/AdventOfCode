@@ -1,7 +1,8 @@
 require_relative '../mine'
 
 RSpec.describe Mine do
-  subject(:mine) { Mine.new(input_string) }
+  let(:leading_zeroes_count) { 5 }
+  subject(:mine) { Mine.new(input_string, leading_zeroes_count) }
   {
     'abcdef': 609043,
     'pqrstuv': 1048970
