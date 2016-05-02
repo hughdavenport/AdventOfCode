@@ -38,7 +38,7 @@ def grouped_digits(number)
 end
 
 if __FILE__ == $0
-  input_number = 3113322113
+  input_number = 1321131112
   generator = LookAndSayGenerator.new(input_number)
   40.times { |num| generator.next; printf("\rCalculating... %d / 40", num); }
   printf("\r%d\n", generator.number.to_s.length)

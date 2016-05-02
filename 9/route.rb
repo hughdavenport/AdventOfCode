@@ -37,15 +37,17 @@ def read_input(input_text)
   distance_graph
 end
 
-def solve_shortest_path(distance_graph)
-  distance_graph.nodes.permutation.sort { |path1, path2| distance_graph.path_length(path1) <=> distance_graph.path_length(path2) }.first
+def solve_shortest_and_longest_paths(distance_graph)
+  sorted_order = distance_graph.nodes.permutation.sort { |path1, path2| distance_graph.path_length(path1) <=> distance_graph.path_length(path2) }
+  [sorted_order.first, sorted_order.last]
 end
+
 
 if __FILE__ == $0
   input_file_name = ARGV[0]
   File.open(input_file_name, "r") do |file|
     distance_graph = read_input(file.read)
-    shortest_path = solve_shortest_path(distance_graph)
-    printf("%d\n", distance_graph.path_length(shortest_path))
+    shortest_path, longest_path = solve_shortest_and_longest_paths(distance_graph)
+    printf("%d %d\n", distance_graph.path_length(shortest_path), distance_graph.path_length(longest_path))
   end
 end

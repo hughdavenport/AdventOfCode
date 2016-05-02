@@ -44,15 +44,31 @@ class StringCounter
   end
 end
 
+class EncodeDifferenceCounter
+  def initialize(string)
+    @string = string
+  end
+
+  def call
+    @string.length - @string.gsub(/[\"\\]/,'').length + 2
+  end
+end
+
+
 if __FILE__ == $0
   input_file_name = ARGV[0]
   File.open(input_file_name, "r") do |file|
+    
+    total_re_encoded_count = 0
     string_counter = StringCounter.new
-    file_content = file.read
-    file_content.each_char do |character|
-      string_counter.push_character(character)
+    
+    file.each_line do |line|
+      line.each_char do |character|
+        string_counter.push_character(character)
+      end
+      puts EncodeDifferenceCounter.new(line).call
+      total_re_encoded_count += EncodeDifferenceCounter.new(line).call
     end
-
-    printf("%d\n", string_counter.raw_code_characters_count - string_counter.represented_string_characters_count)
+    printf("%d %d\n", string_counter.raw_code_characters_count - string_counter.represented_string_characters_count, total_re_encoded_count)
   end
 end
