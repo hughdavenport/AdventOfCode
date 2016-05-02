@@ -13,7 +13,7 @@ RSpec.describe LightGrid do
       it "#{expected_result[index]} are on" do
         input.each do |key, points|
           light_grid.method(key).call(*points)
-          expect(light_grid.on).to eq(expected_result[index])
+          expect(light_grid.total_turned_on).to eq(expected_result[index])
         end
       end
     end
@@ -25,7 +25,7 @@ RSpec.describe LightGrid do
       it "#{expected_result[index]} are on" do
         input.each do |key, points|
           light_grid.method(key).call(*points)
-          expect(light_grid.on).to eq(expected_result[index])
+          expect(light_grid.total_turned_on).to eq(expected_result[index])
         end
       end
     end
