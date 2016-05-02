@@ -1,7 +1,10 @@
 #!/bin/env ruby
 
 require_relative 'deliveries'
-puts ARGV
+require_relative 'deliveries_with_two_santas'
+
 input = File.read(ARGV[0])
 
-puts Deliveries.new(input).call
+puts("Santa only: #{Deliveries.new(input).call}")
+
+puts("Santa & Robo-Santa: #{DeliveriesWithTwoSantas.new(input).call}")
