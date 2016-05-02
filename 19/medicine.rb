@@ -14,7 +14,6 @@ if __FILE__ == $0
         transitions[parts[0]] = [] unless transitions.include?(parts[0])
         transitions[parts[0]] << parts[1]
       else
-        p transitions
         molecule = line.chomp
         next_molecules = Set.new
         transitions.each do |start, finish_array|
