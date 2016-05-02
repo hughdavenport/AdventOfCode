@@ -5,8 +5,15 @@ require_relative 'parser'
 input = File.read(ARGV[0])
 
 input.each_line do |line|
-  elem = Parser.new(line).call
-  puts line
+  Parser.new(line).call
+end
+
+def reset_and_override_b(input, new_b_value)
+  input.each_line do |line|
+    Parser.new(line).call
+  end
+
+  Value.new('b', new_b_value)
 end
 
 
@@ -14,4 +21,11 @@ end
 #   puts "#{k} == #{obj.call}"
 # end
 
-puts "A is: #{$gate_set['a'].call}"
+a_value = $gate_set['a'].call
+
+puts "A is: #{a_value}"
+
+reset_and_override_b(input, a_value)
+
+new_a_value = $gate_set['a'].call
+puts "New A signal is: #{new_a_value}"
