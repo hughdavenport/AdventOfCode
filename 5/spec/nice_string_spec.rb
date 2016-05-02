@@ -11,7 +11,7 @@ RSpec.describe NiceString do
   }.each do |input, expected|
     context "with #{input}" do
       let(:input_string) { input.to_s }
-      
+
       it "#{expected ? 'is' : 'is not'} a nice string" do
         if expected
           expect(nice_string.call).to be_truthy
