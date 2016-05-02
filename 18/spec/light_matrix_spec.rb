@@ -3,7 +3,11 @@ require_relative '../lights'
 
 RSpec.describe LightMatrix do
   let(:input) { "...\n...\n..." }
-  let(:light_matrix) { read_input(input) }
+  let(:light_matrix) do
+    light_matrix = LightMatrix.new
+    read_input(input, light_matrix)
+    light_matrix
+  end
 
   describe "#neighbors" do
     it "returns neighbors of cell" do
@@ -66,8 +70,12 @@ RSpec.describe LightMatrix do
   end
 
   it "simulates expected steps correctly" do
-    light_matrix = read_input(expected_steps[0])
+    read_input(expected_steps[0], light_matrix)
     light_matrix.next_step
-    expect(light_matrix.lights).to eq(read_input(expected_steps[1]).lights)
+
+    expected_light_matrix = LightMatrix.new
+    read_input(expected_steps[1], expected_light_matrix)
+
+    expect(light_matrix.lights).to eq(expected_light_matrix.lights)
   end
 end

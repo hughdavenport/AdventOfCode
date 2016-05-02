@@ -1,6 +1,7 @@
 class LightMatrix
-  def initialize
+  def initialize(keep_corners_on = false)
     @lights = {}
+    @keep_corners_on = keep_corners_on
   end
 
   def lights_on
@@ -14,19 +15,28 @@ class LightMatrix
   end
 
   def next_step
-    next_lights = @lights.clone
+    set_corners_on if @keep_corners_on
 
-    @lights.keys.each do |coord|
-      neighbors_on = neighbors(coord).map { |neighbor_coord| @lights[neighbor_coord] }.count { |on| on }
-      current_on = @lights[coord]
+    old_lights = @lights.clone
+
+    old_lights.keys.each do |coord|
+      neighbors_on = neighbors(coord).map { |neighbor_coord| old_lights[neighbor_coord] }.count { |on| on }
+      current_on = old_lights[coord]
       if current_on && ![2,3].include?(neighbors_on)
-        next_lights[coord] = false
+        set_light(*coord, false)
       elsif !current_on && neighbors_on == 3
-        next_lights[coord] = true
+        set_light(*coord, true)
       end
     end
 
-    @lights = next_lights
+    set_corners_on if @keep_corners_on
+  end
+
+  def set_corners_on
+    @lights[[0,0]] = true
+    @lights[[@max_x,0]] = true
+    @lights[[@max_x,@max_y]] = true
+    @lights[[0,@max_y]] = true
   end
 
   def neighbors(coord)
@@ -57,24 +67,29 @@ class LightMatrix
   attr_reader :lights
 end
 
-def read_input(input)
-  light_matrix = LightMatrix.new
-
+def read_input(input, light_matrix)
   input.each_line.with_index do |line, y|
     line.chomp.each_char.with_index do |char, x|
       light_matrix.set_light(x, y, char == '#')
     end
   end
-
-  light_matrix
 end
 
 if __FILE__ == $0
   input_file_name = ARGV[0]
   input = File.read(input_file_name)
-  light_matrix = read_input(input)
+
+  light_matrix = LightMatrix.new
+  read_input(input, light_matrix)
 
   100.times { light_matrix.next_step }
 
   puts "Lights turned on after 100 iterations: #{light_matrix.lights_on}"
+
+  light_matrix_corners_on = LightMatrix.new(true)
+  read_input(input, light_matrix_corners_on)
+
+  100.times { light_matrix_corners_on.next_step }
+
+  puts "Lights turned on after 100 iterations with keeping corners on: #{light_matrix_corners_on.lights_on}"
 end
