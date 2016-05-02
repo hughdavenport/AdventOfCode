@@ -1,15 +1,17 @@
 #!/bin/env ruby
 
 require_relative 'line_parser'
-require_relative 'wrapping_paper'
+require_relative 'resource_calculator'
 
-puts ARGV
 parser = LineParser.new(File.open(ARGV[0]))
-total = 0
+wrapping_paper_total = 0
+ribbon_total = 0
 
 parser.each do |length, width, height|
-  total += WrappingPaper.new(length, width, height).call
-  puts total
+  resource_calculator = ResourceCalculator.new(length, width, height).call
+  wrapping_paper_total += resource_calculator.wrapping_paper
+  ribbon_total += resource_calculator.ribbon
 end
 
-puts total
+puts("Wrapping paper: #{wrapping_paper_total}")
+puts("Ribbon: #{ribbon_total}")
