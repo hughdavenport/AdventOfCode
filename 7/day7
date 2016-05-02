@@ -1,0 +1,17 @@
+#!/bin/env ruby
+
+require_relative 'parser'
+
+input = File.read(ARGV[0])
+
+input.each_line do |line|
+  elem = Parser.new(line).call
+  puts line
+end
+
+
+# $gate_set.each do |k,obj|
+#   puts "#{k} == #{obj.call}"
+# end
+
+puts "A is: #{$gate_set['a'].call}"
