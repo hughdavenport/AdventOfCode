@@ -1,45 +1,34 @@
 class LookAndSayGenerator
-  def initialize(number = 1)
-    @number = number
+  attr_reader :string
+  
+  def initialize(string = '1')
+    @string = string
   end
-
-  attr_reader :number
-
-  def next
-    new_number = ""
-    grouped_digits(@number).each do |digit_group|
-      new_number += digit_group.length.to_s
-      new_number += digit_group.first.to_s
+  
+  def call
+    result = ''
+    active_char = nil
+    active_count = 0
+    @string.each_char.with_index do |char, index|
+      if index == 0 || active_char != char
+        result << active_count.to_s + active_char if index > 0
+        active_char = char
+        active_count = 1
+      else
+        active_count += 1
+      end
     end
-    @number = new_number.to_i
+    result << active_count.to_s + active_char
   end
-end
-
-def digits(number)
-  number.to_s.chars.map(&:to_i)
-end
-
-def grouped_digits(number)
-  all_digit_groups = []
-
-  digits_group = []
-  digits(number).each do |digit|
-    if digits_group.empty? || digits_group.last == digit
-      digits_group << digit
-    else
-      all_digit_groups << digits_group
-      digits_group = [digit]
-    end
-  end
-
-  all_digit_groups << digits_group unless digits_group.empty?
-
-  all_digit_groups
 end
 
 if __FILE__ == $0
-  input_number = 1321131112
-  generator = LookAndSayGenerator.new(input_number)
-  40.times { |num| generator.next; printf("\rCalculating... %d / 40", num); }
-  printf("\r%d\n", generator.number.to_s.length)
+  input_string = '1321131112'
+  generator = LookAndSayGenerator.new(input_string)
+  
+  50.times do |num| 
+    generator = LookAndSayGenerator.new(generator.call) 
+    printf("\rCalculating... %d / 40", num)
+  end
+  printf("\r\n%d\n", generator.string.length)
 end
