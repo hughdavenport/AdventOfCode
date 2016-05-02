@@ -1,14 +1,18 @@
 #!/bin/env ruby
 
 require_relative 'nice_string'
+require_relative 'nicer_string'
 
 input = File.read(ARGV[0])
 
-count = 0
+nice_count = 0
+nicer_count = 0
 total = 0
 input.each_line do |line|
   total += 1
-  count += 1 if NiceString.new(line.chomp).call
+  nice_count += 1 if NiceString.new(line.chomp).call
+  nicer_count += 1 if NicerString.new(line.chomp).call
 end
 
-puts "Result: #{count} of #{total}"
+puts "Nice string result: #{nice_count} of #{total}"
+puts "Nicer string result: #{nicer_count} of #{total}"
