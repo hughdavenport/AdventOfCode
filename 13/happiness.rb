@@ -38,6 +38,8 @@ def read_input(input_text, happiness_table)
     delta_happiness *= -1 if gain_or_lose == 'lose'
     neighbor = match[4]
     happiness_table.add_happiness_condition(person, neighbor, delta_happiness)
+    happiness_table.add_happiness_condition("Me", person, 0)
+    happiness_table.add_happiness_condition(person, "Me", 0)
   end
 end
 
