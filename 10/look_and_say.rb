@@ -23,12 +23,21 @@ class LookAndSayGenerator
 end
 
 if __FILE__ == $0
-  input_string = '1321131112'
+  input_file_name = ARGV[0]
+  input_string = File.read(input_file_name).chomp
+
   generator = LookAndSayGenerator.new(input_string)
-  
-  50.times do |num| 
-    generator = LookAndSayGenerator.new(generator.call) 
+
+  40.times do |num|
+    generator = LookAndSayGenerator.new(generator.call)
     printf("\rCalculating... %d / 40", num)
   end
-  printf("\r\n%d\n", generator.string.length)
+  printf("\nValue at 40: %d\n", generator.string.length)
+
+  10.times do |num|
+    generator = LookAndSayGenerator.new(generator.call)
+    printf("\rCalculating... %d / 10", num)
+  end
+
+  printf("\nValue at 50: %d\n", generator.string.length)
 end
