@@ -4,7 +4,7 @@ class CookieRecipe
   def initialize(available_ingredients)
     @available_ingredients = available_ingredients
   end
-  
+
   def highest_score
     new_scores = {}
     initialize_working_properties
@@ -13,34 +13,34 @@ class CookieRecipe
       new_scores = {}
       @available_ingredients.each do |ingredient, properties|
         score_input = @used_ingredients.dup
-        
+
         score_input[ingredient] += 1
         new_scores[ingredient] = score_cookie(score_input)
       end
-      
+
       @used_ingredients[new_scores.max{ |a, b| a[1] <=> b[1] }[0]] += 1
     end
-    
+
     new_scores.max{ |a, b| a[1] <=> b[1] }[1]
   end
-  
+
   def used_ingredients
     @used_ingredients
   end
-  
+
   private
-  
+
   def initialize_working_properties
     @used_ingredients = {}
     @available_ingredients.each_key do |ingredient|
       @used_ingredients[ingredient] = 1
     end
   end
-  
+
   def total_ingredients
     @used_ingredients.each_value.reduce(:+)
   end
-  
+
   def score_cookie(measurements)
     scores = {}
     measurements.each do |ingredient, amount|
@@ -49,8 +49,8 @@ class CookieRecipe
        scores[property] += amount * value
      end
     end
-    
-    scores.reduce(1) do |current, prop_value |
+
+    scores.reduce(1) do |current, prop_value|
       next current if prop_value[0] == :calories
       if prop_value[1] < 0
         0
