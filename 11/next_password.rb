@@ -65,7 +65,7 @@ end
 
 def increment_password(password_string)
   password_number = password_string_to_password_number(password_string)
-  
+
   password_number += 1
   password_number += 1 until password_good?(password_number_to_password_string(password_number))
 
@@ -74,6 +74,10 @@ end
 
 if __FILE__ == $0
   input_password = File.read(ARGV[0]).chomp
+
   next_password = increment_password(input_password)
-  puts(next_password)
+  puts "Next password: #{next_password}"
+
+  yet_another_password = increment_password(next_password)
+  puts "Yet another password: #{yet_another_password}"
 end
