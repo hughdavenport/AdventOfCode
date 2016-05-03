@@ -29,7 +29,7 @@ class HappinessTable
   end
 end
 
-def read_input(input_text, happiness_table)
+def read_input(input_text, happiness_table, add_me = false)
   input_text.split("\n").each do |line|
     match = line.match(/(.*) would (gain|lose) (.*) happiness units by sitting next to (.*)./)
     person = match[1]
@@ -38,8 +38,10 @@ def read_input(input_text, happiness_table)
     delta_happiness *= -1 if gain_or_lose == 'lose'
     neighbor = match[4]
     happiness_table.add_happiness_condition(person, neighbor, delta_happiness)
-    happiness_table.add_happiness_condition("Me", person, 0)
-    happiness_table.add_happiness_condition(person, "Me", 0)
+    if add_me
+      happiness_table.add_happiness_condition("Me", person, 0)
+      happiness_table.add_happiness_condition(person, "Me", 0)
+    end
   end
 end
 
@@ -48,6 +50,9 @@ if __FILE__ == $0
   File.open(input_file_name, "r") do |file|
     happiness_table = HappinessTable.new
     read_input(file.read, happiness_table)
-    printf("%d\n", happiness_table.find_best_arrangement)
+    printf("Without you: %d\n", happiness_table.find_best_arrangement)
+    file.rewind
+    read_input(file.read, happiness_table,true )
+    printf("With you: %d\n", happiness_table.find_best_arrangement)
   end
 end
