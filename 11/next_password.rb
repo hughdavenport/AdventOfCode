@@ -73,7 +73,7 @@ def increment_password(password_string)
 end
 
 if __FILE__ == $0
-  input_password = "hepxxyzz"
+  input_password = File.read(ARGV[0]).chomp
   next_password = increment_password(input_password)
   puts(next_password)
 end
