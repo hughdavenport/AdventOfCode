@@ -7,8 +7,8 @@ SPELLS = {
 }
 
 class State
-  attr_accessor :player_hp, :player_armour, :player_mana, :boss_hp, :boss_damage, :effects, :turn, :used_mana, :previous_state, :spell_used
-  def initialize(player_hp:, player_armour:, player_mana:, boss_hp:, boss_damage:, effects:, turn:, used_mana:, previous_state:, spell_used:)
+  attr_accessor :player_hp, :player_armour, :player_mana, :boss_hp, :boss_damage, :effects, :turn, :used_mana, :previous_state, :spell_used, :hard_mode
+  def initialize(player_hp:, player_armour:, player_mana:, boss_hp:, boss_damage:, effects:, turn:, used_mana:, previous_state:, spell_used:, hard_mode: true)
     self.player_hp = player_hp
     self.player_armour = player_armour
     self.player_mana = player_mana
@@ -19,6 +19,7 @@ class State
     self.used_mana = used_mana
     self.previous_state = previous_state
     self.spell_used = spell_used
+    self.hard_mode = hard_mode
   end
 
   def apply(spell)
@@ -29,6 +30,11 @@ class State
     new_boss_damage = boss_damage
     new_used_mana = used_mana
     new_turn = turn == :boss ? :player : :boss
+    if hard_mode && turn == :player
+      new_player_hp -= 1
+      # We died, just go now
+      return State.new(player_hp: new_player_hp, player_armour: new_player_armour, player_mana: new_player_mana, boss_hp: new_boss_hp, boss_damage: new_boss_damage, effects: nil, turn: new_turn, used_mana: new_used_mana, previous_state: self, spell_used: spell, hard_mode: hard_mode) if new_player_hp <= 0
+    end
 
     # Do effects
     new_effects = effects.map do |effect|
@@ -43,7 +49,7 @@ class State
     new_effects.delete_if { |effect| effect[:duration] == 0 }
 
     # Boss died, just go now
-    return State.new(player_hp: new_player_hp, player_armour: new_player_armour, player_mana: new_player_mana, boss_hp: new_boss_hp, boss_damage: new_boss_damage, effects: new_effects, turn: new_turn, used_mana: new_used_mana, previous_state: self, spell_used: spell) if new_boss_hp <= 0
+    return State.new(player_hp: new_player_hp, player_armour: new_player_armour, player_mana: new_player_mana, boss_hp: new_boss_hp, boss_damage: new_boss_damage, effects: new_effects, turn: new_turn, used_mana: new_used_mana, previous_state: self, spell_used: spell, hard_mode: hard_mode) if new_boss_hp <= 0
 
     if turn == :boss
       # Apply boss damage
@@ -58,7 +64,7 @@ class State
       new_effects << spell_details[:effect] if spell_details.include?(:effect)
     end
 
-    State.new(player_hp: new_player_hp, player_armour: new_player_armour, player_mana: new_player_mana, boss_hp: new_boss_hp, boss_damage: new_boss_damage, effects: new_effects, turn: new_turn, used_mana: new_used_mana, previous_state: self, spell_used: spell)
+    State.new(player_hp: new_player_hp, player_armour: new_player_armour, player_mana: new_player_mana, boss_hp: new_boss_hp, boss_damage: new_boss_damage, effects: new_effects, turn: new_turn, used_mana: new_used_mana, previous_state: self, spell_used: spell, hard_mode: hard_mode)
   end
 
   def neighbors
@@ -111,7 +117,7 @@ boss_damage = ARGV[1].to_i
 player_hp = ARGV.fetch(2, "50").to_i
 player_mana = ARGV.fetch(3, "500").to_i
 
-start_state = State.new(player_hp: player_hp, player_armour: 0, player_mana: player_mana, boss_hp: boss_hp, boss_damage: boss_damage, effects: [], turn: :player, used_mana: 0, previous_state: nil, spell_used: nil)
+start_state = State.new(player_hp: player_hp, player_armour: 0, player_mana: player_mana, boss_hp: boss_hp, boss_damage: boss_damage, effects: [], turn: :player, used_mana: 0, previous_state: nil, spell_used: nil, hard_mode: !ARGV.fetch(4, "").empty?)
 #final_state = start_state.apply(:recharge).apply(nil).apply(:shield).apply(nil).apply(:drain).apply(nil).apply(:poison).apply(nil).apply(:magic_missile).apply(nil)
 #puts final_state
 #states = []
@@ -131,9 +137,12 @@ q.push(start_state)
 require 'set'
 seen = Set.new
 
+count = 0
 while !final_state && !q.empty?
   state = q.pop
 #  puts "Chose state #{state.player_hp} VS #{state.boss_hp}, with pnumber #{state.pnumber}"
+  puts "Chose state #{state.pnumber} #{state.hard_mode ? "HARD_MODE" : "NORMAL_MODE"}" if count % 1000 == 0
+  count += 1
   final_state = state if state.won?
   seen.add(state)
   break if final_state
