@@ -9,10 +9,10 @@ class ParseAccounts
   
   def call
     if @master.is_a? Array
-      @master.reduce(0) { |current, value| current + ParseAccounts.new(value).call }
+      @master.reduce(0) { |current, value| current + ParseAccounts.new(value, @sans_red).call }
     elsif @master.is_a? Hash
       return 0 if @sans_red && @master.any? { |key, value| key == 'red' || value == 'red' }
-      @master.reduce(0) { |current, key_value| current + ParseAccounts.new(key_value[1]).call }
+      @master.reduce(0) { |current, key_value| current + ParseAccounts.new(key_value[1], @sans_red).call }
     elsif @master.is_a? String
       0
     else
