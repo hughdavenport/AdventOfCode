@@ -68,6 +68,10 @@ class Turing
     end
   end
 
+  def set_register(register_name, value)
+    @registers[register_name] = value
+  end
+
   def register(register_name)
     @registers[register_name]
   end
@@ -82,4 +86,10 @@ if __FILE__ == $0
   turing.execute
 
   puts "Register b: #{turing.register('b')}"
+
+  turing_with_changed_register = Turing.new(commands)
+  turing_with_changed_register.set_register('a', 1)
+  turing_with_changed_register.execute
+
+  puts "Register b for changed register: #{turing_with_changed_register.register('b')}"
 end
