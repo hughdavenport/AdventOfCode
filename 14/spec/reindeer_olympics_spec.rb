@@ -28,6 +28,6 @@ end
 RSpec.describe "#read_input" do
   it "returns list of reindeers parsed from the input" do
     expect(read_input("Prancer can fly 9 km/s for 12 seconds, but then must rest for 97 seconds.\nDancer can fly 37 km/s for 1 seconds, but then must rest for 36 seconds.")).to eq(
-      [Reindeer.new("Prancer", 9, 12, 97), Reindeer.new("Dancer", 37, 1, 36)])
+      [Reindeer.new("Prancer", 9, 12, 97, 0), Reindeer.new("Dancer", 37, 1, 36, 0)])
   end
 end
