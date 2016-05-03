@@ -1,0 +1,47 @@
+
+34234030 magic_missile:	1249 {:hp=>6, :mana=>261, :mana_used=>1249, :armour=>0} {:hp=>-2, :damage=>9}
+3423403 magic_missile:	1249 {:hp=>6, :mana=>314, :mana_used=>1196, :armour=>0} {:hp=>2, :damage=>9}
+342340 poison:	1249 {:hp=>15, :mana=>367, :mana_used=>1143, :armour=>0} {:hp=>12, :damage=>9}
+34234 magic_missile:	1249 {:hp=>24, :mana=>439, :mana_used=>970, :armour=>0} {:hp=>18, :damage=>9}
+3423 recharge:	1249 {:hp=>26, :mana=>290, :mana_used=>917, :armour=>7} {:hp=>28, :damage=>9}
+342 poison:	1249 {:hp=>28, :mana=>317, :mana_used=>688, :armour=>7} {:hp=>34, :damage=>9}
+34 shield:	1249 {:hp=>30, :mana=>389, :mana_used=>515, :armour=>7} {:hp=>40, :damage=>9}
+3 recharge:	1249 {:hp=>32, :mana=>300, :mana_used=>402, :armour=>0} {:hp=>46, :damage=>9}
+ poison:	1249 {:hp=>41, :mana=>327, :mana_used=>173, :armour=>0} {:hp=>52, :damage=>9}
+                            
+                            58  50
+173      poison         327
+                            55        p5
+                                41
+                            52        p4
+229      recharge        98
+                        199 49        p3r4
+                                32
+                        300 46        p2r3
+113      shield         187
+                       x288 43        p1r2s5
+                                30
+                       x389 40        r1s4
+173      poison         216
+                       x317 37        p5s3
+                                28
+                       x317 34        p4s2
+229      recharge        88 
+                       x189 31        p3s1r4
+                                26
+                       x290 28        p2r3
+ 53      magic_missile  237 24
+                        338           p1r2
+                                16
+                       x439           r1
+173      poison         366
+ 53      magic_missile  
+ 53      magic_missile  
+
+
+
+  magic_missile: { cost: 53, damage: 4 },
+  drain: { cost: 73, damage: 2, heal: 2 },
+  shield: { cost: 113, duration: 6, armour: 7 },
+  poison: { cost: 173, duration: 6, damage: 3  },
+  recharge: { cost: 229, duration: 5, mana: 101  }
